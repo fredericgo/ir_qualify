@@ -28,24 +28,33 @@
 \maketitle
 \section{Indexing}
 \begin{questions}
-  \question (28 pts) Inverted index can improve the speed of query processing in IR systems.  \begin{subparts}
-   \subpart (a) (6 pts) Give two advantages of controlled-vocabulary indexing over free-text indexing.   \ans 1) we have clear ontology and relationship among words 2) no vocabulary 
+  \question (28 pts) Inverted index can improve the speed of query processing in IR systems.
+  \begin{subparts}
+   \subpart (a) (6 pts) Give two advantages of controlled-vocabulary indexing over free-text indexing.
+   \ans 1) we have clear ontology and relationship among words 2) no vocabulary 
    mismatch (each word has clear meaning and we know what thing the speak addresses)
-   \subpart (b) (6 pts) What are term-at-a-time and document-at-a-time query processing methods,respectively? Give an advantage of term-at-a-time query processing overdocument-at-a-time query processing.
+   \subpart (b) (6 pts) What are term-at-a-time and document-at-a-time query processing methods,
+respectively? Give an advantage of term-at-a-time query processing over
+document-at-a-time query processing.
 /ans let query $q={q_1, ..., q_n}$, $q_i$ the $i$-th token. These two methods are the strategy of 
 calculating all scores $s(d_i, q)$. Document-at-a-time: we load every postings 
-for $\{q_1,..,q_n\}$. for each document $d$ we sum scores $s(d, q_i)$ for all $q_i$ and keep a priority queue on document scores.Term-at-a-time:  for each token $q_i$, we only extract one posting, and increase the scores for each document see.but we need 
+for $\{q_1,..,q_n\}$. for each document $d$ we sum scores $s(d, q_i)$ for all $q_i$ and keep a priority queue on document scores.
+Term-at-a-time:  for each token $q_i$, we only extract one posting, and increase the scores for each document see.but we need 
 to have a accumelator for the scores of each documents. Advantages: only access 
 one posting means we don't have to read out postings from disk many times.
  
- \subpart (c) (8 pts) Give an example to describe how to effectively compress a postings list, andthen discuss how document frequency of a word affects the compression ratio of itsposting list.
+ \subpart (c) (8 pts) Give an example to describe how to effectively compress a postings list, and
+then discuss how document frequency of a word affects the compression ratio of its
+posting list.
 \ans Delta coding: save first document's id, and the following documents the 
 differences between two adjacent ids. Then encode will a coding which has length
 proportional to deltas. Ex: 1 - 123- 133 - 150
 (coding)1- 122-10-17. The compression ratio depends on document frequency fo 
 this word, because when document frequency is high, most numbers will be very 
 small. when document frequency is low, numbers are large and the encoded posting is 
-large. \subpart (d) (8 pts) Write an algorithm to efficiently intersect two given postings lists with skippointers, and then discuss how the number of skip pointers affects the complexity of your algorithm.
+large.
+ \subpart (d) (8 pts) Write an algorithm to efficiently intersect two given postings lists with skip
+pointers, and then discuss how the number of skip pointers affects the complexity of your algorithm.
 \ans
  p1; p2 intersect =[];
  a = p1.first; b = p2.first
@@ -66,11 +75,15 @@ large. \subpart (d) (8 pts) Write an algorithm to efficiently intersect two giv
  documents.
  
     
-  \end{subparts}\end{questions}
+  \end{subparts}
+\end{questions}
 \section{Vector Space Model}
 \begin{questions}
-  \question (20 pts) Several variants of term-weighting for vector space model have been developed.  \begin{subparts}
-    \subpart (6 pts) The logarithm function is often used for calculating some weights. Give oneexample formula for such weight. Explain the rationale behind the usage oflogarithm as clearly as possible. 
+  \question (20 pts) Several variants of term-weighting for vector space model have been developed.
+  \begin{subparts}
+    \subpart (6 pts) The logarithm function is often used for calculating some weights. Give one
+example formula for such weight. Explain the rationale behind the usage of
+logarithm as clearly as possible. 
 \ans For example, IDF (inverse document frequency) 
 , $$
 IDF(t)=\log\frac{n}{k},
@@ -82,9 +95,13 @@ heuristic is linear, meaning that the weights can be equally important for all
 values of $\frac{n}{k}$ up to infinity. Often, the linear assumption is wrong, 
 and the effect of very high value may not be as strong as the low values. 
 Therefore we introduce nonlinearity by using $\log$ to penalize the effect of high values.
-   \subpart  (10 pts) Here is the way to transform term frequency (TF) in Okapi BM25:$$
-(k+1)\frac{\mbox{TF}}{k+\mbox{TF}}\mbox{ (k is a non-negative number)}
-$$  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = ∞. What’s the upper bound of the transformed TF?Draw a figure to show the relationship between original TF and transformed TF.
+   \subpart  (10 pts) Here is the way to transform term frequency (TF) in Okapi BM25:
+$$
+(k+1)\frac{\mbox{TF}}{k+\mbox{TF}}\mbox{ (k is a non-negative number)
+}
+$$
+  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = ∞. What’s the upper bound of the transformed TF?
+Draw a figure to show the relationship between original TF and transformed TF.
  \ans  $k$ turns on/off the effect of term frequency.  When $k=0$ this score is 
  always $0$ or $1$, thus the TF is binary. When $k>0$, higher TF is penalized. 
  When $k$ is large, the transformed $TF=TF$.
@@ -94,11 +111,14 @@ $$  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = 
   Cosine similarity:$cosine(\vec{d},\vec{q})=\sum_i d_i q_i$ (because $q$ and $d$ are normalized)\\
   Euclidean distance: $dist(\vec{d}, \vec{q})=\sqrt{\sum_i (d_i- q_i)^2}=\sqrt{\sum_i(x_i^2+q_i^2-2x_i q_i)}=\sqrt{2-2\sum_i x_i 
   q_i}$, similarity is proportional to $\sum_i x_i q_i$
-  \end{subparts}\end{questions}
+  \end{subparts}
+\end{questions}
 \section{Probabilistic Model}
 \begin{questions}
-   \question (20 pts) The basis of probability ranking principle (PRP) indicates that a retrieval system performs optimally if documents are ranked according to decreasing probabilities of their relevance to a query. The binary independence model (BIM) is developed based on PRP.  \begin{subparts}
-    \subpart (a) (8 pts) Describe how BIM with relevance feedback estimates the probability that a word appears in a document relevant or irrelevant to a query.    \ans Denote the probabitlity that a word presents in relevant document 
+   \question (20 pts) The basis of probability ranking principle (PRP) indicates that a retrieval system performs optimally if documents are ranked according to decreasing probabilities of their relevance to a query. The binary independence model (BIM) is developed based on PRP.
+  \begin{subparts}
+    \subpart (a) (8 pts) Describe how BIM with relevance feedback estimates the probability that a word appears in a document relevant or irrelevant to a query.
+    \ans Denote the probabitlity that a word presents in relevant document 
     $p_i=P(x_i=1|R,q)$, and $u_i=P(x_i=1|NR, q)$. We can initially guess that $p_i=0.5$ 
    (random number), and $u_i=df_i/N$, where $df_i$ is $x_i$'s document frequency 
    and $N$ total number of document, reasonable because most documents are assume to be nonrelevant.
@@ -108,7 +128,8 @@ $$  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = 
    documents. Then we calculate $p_i=\frac{|VR_i|}{|VR|}$, with $VR_i$ the set 
    of relevant document where $x_i$ is present, and $u_i=\frac{|VNR_i|}{|VNR|}$. 
    Then we iterate these two process until convergence.
-   \subpart (6 pts) Give an example to explain that ranking based on PRP may not provide satisfactory search results even if the probability of relevance can be well estimated.  \ans PRP's most annoying feature is that it judges the relevance of documents
+   \subpart (6 pts) Give an example to explain that ranking based on PRP may not provide satisfactory search results even if the probability of relevance can be well estimated.
+  \ans PRP's most annoying feature is that it judges the relevance of documents
   independently.  If this is true, suppose that on the web there many highly similar 
   documents and these documents are highly relevant to query $x$. At the same 
   time there are some other less relevant documents discussing other interesting 
@@ -118,11 +139,14 @@ $$  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = 
 \ans TFIDF: consider word frequency BIM for short documents.
         TFIDF: doesn't need relevance feedback to estimate parameters.
         TFIDF: can consider document length effects.
-  \end{subparts}\end{questions}
+  \end{subparts}
+\end{questions}
 \section{Language Model}
 \begin{questions}
-  \question 4. (20 pts) Statistical language models (LM) have been successfully applied to IR.  \begin{subparts}
-    \subpart (a) (10 pts) What are query likelihood LM and document likelihood LM, respectively? Give an advantage of query likelihood LM over document likelihood LM in IR.   \ans Given a document $d$ and query $q$, we want the probability of relevance 
+  \question 4. (20 pts) Statistical language models (LM) have been successfully applied to IR.
+  \begin{subparts}
+    \subpart (a) (10 pts) What are query likelihood LM and document likelihood LM, respectively? Give an advantage of query likelihood LM over document likelihood LM in IR.
+   \ans Given a document $d$ and query $q$, we want the probability of relevance 
    $P(R|d,q)$. With Bayes theorem, we have $P(R|d,q)\propto P(q|d,R)P(d|R)$. 
    Suppose the prior $P(d|R)$ is uniform, what we have left is calculating 
    $P(q|d,R)$. This is called query likelihood, because quries are thought to be 
@@ -136,7 +160,8 @@ $$  What’s the meaning of parameter k? Discuss the cases where k = 0 and k = 
    for $P(w_i|\theta_q)$. The former models we have a lot of documents which are 
    long and have many words, but in the latter models we only have queries which 
    are short and often don't have a real language model.
-   \subpart (b) (10 pts) Propose a way to perform smoothing for a LM (show your calculation), andthen discuss how the smoothing affects retrieval performance for (1) the query terms not occurring in a document and (2) the query terms occurring in a document.
+   \subpart (b) (10 pts) Propose a way to perform smoothing for a LM (show your calculation), and
+then discuss how the smoothing affects retrieval performance for (1) the query terms not occurring in a document and (2) the query terms occurring in a document.
 \ans The easiest one is introduce an big corpus, i.e. 
 \begin{equation}
   P(w_i|d)=
@@ -149,18 +174,25 @@ If query term is absent from document, the smoothing bypass the probability to
 the corpus probability. So the retrieval performace depends on the similarity between the document and language model 
 of the corpus. If a term is present in the document, the probability is estimate 
 only by the document.
-  \end{subparts}\end{questions}
+  \end{subparts}
+  \question Smoothing is very import to retrieval model.
+  \begin{subparts}
+  \subpart Describe (1) how to apply language model to the ranking problem (2) how to perform smoothing in the language model
+  \subpart Describe (1) how to apply LSI(latent semantic indexing) to ranking problem and (2) how to perform low-rank approximation, i.e. smoothing, by dimension reduction.
+  \ans Denote term-to-document matrix $A$. Apply SVD to $A$, we have $A=U\Sigma V^\top$. $U$ is term-to-concept matrix, $\Sigma$ is the singular value matrix which stores the importance of each concept dimension, and $V$ is document-concept matrix. Now we apply LSI to ranking problem. Given a query, this can be represented as a document vector $q$. We use $\Sigma^{-1}U^\top$ to map q to the concept space. why? $A=U\Sigma V^\top$, therefore $\Sigma^{-1}U^\top A$ is concept-to-document matrix. then we calculate similarity between q and documents $d_i$ in the collection, i.e. $sim(q,d_i)$ (2) dimension reduction is easy. since $\Sigma$ is very large matrix $|terms|*|documents|$. we can delete smaller singular values and reduce this to a smaller concept space. This has an effect of smoothing because the reduced decomposition no longer fit to the original matrix $A$, but many zeroes are filled.
+  \end{subparts}
+\end{questions}
 \section{Evaluation}
 This kind of question is very popular because one can calculate the numbers.
 \begin{questions}
   \question Given a query $q$, there are $6$ relevant document in a 1000-document 
  colloection. Each system in two returns its top 10 list:
 
-\makebox{\textwidth}{
+
  System 1:  R N R N N  N N N R R
  
  System 2:  N R N N R  R R N N N
-} 
+
 
 \begin{subparts}
   \subpart Calculate MAP for the two systems. Which is higher? 
@@ -192,31 +224,37 @@ list. And these are the top 10.
   ranked document for queries are averaged. Precision for the highest ranked is 
   called reciprocal rank.
 \end{subparts}
-\question (16 pts) NDCG (Normalized Discounted Cumulative Gain), MAP (Mean Average Precision), Precision@k and F-measure are famous evaluation metrics in IR.\begin{subparts}
+\question (16 pts) NDCG (Normalized Discounted Cumulative Gain), MAP (Mean Average Precision), Precision@k and F-measure are famous evaluation metrics in IR.
+\begin{subparts}
 \subpart (6 pts) What are the important aspects of relevance that are considered by NDCG but not by F-measure?
 \ans F-measure does not consider the effect of ranking. It is in some sense and average of precision and recall.
 Precision and recall consider only overall ratios but cfNDCG is sensitive to the ordering of documents.
-\subpart (6 pts) Compare the performance of two IR systems. Give an example to explain if it’s possible that one performs better in terms of MAP but worse in terms of Precision@k? Show your calculation.\subpart (4 pts) Consider the balanced F-measure. What is the advantage of using the harmonic mean rather than arithmetic or geometric mean in its formula?
+\subpart (6 pts) Compare the performance of two IR systems. Give an example to explain if it’s possible that one performs better in terms of MAP but worse in terms of Precision@k? Show your calculation.
+\subpart (4 pts) Consider the balanced F-measure. What is the advantage of using the harmonic mean rather than arithmetic or geometric mean in its formula?
 \end{subparts} 
 \end{questions}
 PageRank, HITS, preprocessing...
 
 \section{Miscelly}
 \begin{questions}
-  \question  Most of search engines extract two kinds of features from web pages and structures, including topical features (e.g., terms) and quality features (e.g., PageRank), and apply machine learning approaches to learning the ranking.\begin{subparts}
+  \question  Most of search engines extract two kinds of features from web pages and structures, including topical features (e.g., terms) and quality features (e.g., PageRank), and apply machine learning approaches to learning the ranking.
+\begin{subparts}
   \subpart (8 pts) Describe four lexical processing methods for topical features.
   \ans Tokenization: convert stentences to tokens, basic units of vocabulary, phase recognition: use classifier to 
   detect multi word tokens, Normalizaton: convert different form of the same entity to the same form, e.g. U.S.A., USA, 
   America, stopword removal: remove most frequent words from documents because they carry less meaning, 
   e.g. ``it'', ``is'', ``I'', stemming:  convert morphological variants into the 
   same equivalence class, e.g.: ``dog'', ``dogs'', ``doggy'' = ``dog''.
-  \subpart (9 pts) Suppose a transition probability matrix defines a Markov chain. Under whatconditions will the PageRank scores reach a stationary distribution?
+  \subpart (9 pts) Suppose a transition probability matrix defines a Markov chain. Under what
+conditions will the PageRank scores reach a stationary distribution?
 \ans the transition matrix $A$ must be 1) stochastic $\sum_{j=0}^n A_{ij}=1$, 2) irreducible: for every pair of node $(a,b)$ ,
 there is a path between $a$ and $b$, 3) aperiodic , a state $i$ is periodic if $\exists k> 
 1$,  for all path from $i$ and back to $i$ has length multiple of $k$.
- \subpart  (6 pts) Supervised learning requires training data to learn a model. How do searchengines obtain such training data in an automatic way? Give an example to demonstrate how to learn a model for determining the parameters that combine topical and quality features.
+ \subpart  (6 pts) Supervised learning requires training data to learn a model. How do search
+engines obtain such training data in an automatic way? Give an example to demonstrate how to learn a model for determining the parameters that combine topical and quality features.
 \ans Search engine uses clickthrough data. When a user click a link, we have a 
 positive sample.
-\end{subparts}\end{questions}
+\end{subparts}
+\end{questions}
 
 \end{document}  
